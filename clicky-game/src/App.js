@@ -3,11 +3,12 @@ import Nav from "./components/Nav";
 import Jumbotron from "./components/Jumbotron";
 import FriendCard from "./components/FriendCard";
 import friends from "./friends.json";
+import "./App.css"
 
 class App extends Component {
   state = {
     friends,
-    highScore: 2,
+    highScore: 0,
     score: 0,
     newArr: []
   };
@@ -62,6 +63,7 @@ class App extends Component {
   handleClick = id => {
     let character = this.state.newArr
     let newscore = this.state.score
+    let newhighscore = this.state.highScore
 
     if (character.length > 0 && character.includes(id)) {
       this.setState({
@@ -72,13 +74,14 @@ class App extends Component {
     } else {
       character.push(id)
       this.setState({
-        score: newscore += 1,
+        score: newscore + 1,
         friends: this.shuffleArray(this.state.friends),
         newArr: character
       })
-      if (this.state.score > this.state.highScore) {
+
+      if (this.state.score >= this.state.highScore) {
         this.setState({
-          highScore: this.state.score
+          highScore: newhighscore + 1
         })
       }
     }
@@ -93,6 +96,7 @@ class App extends Component {
           highScore={this.state.highScore}
         />
         <Jumbotron />
+        <div className="card-container">
         {this.state.friends.map(friend => (
           <FriendCard
             handleClick={this.handleClick.bind(this)}
@@ -102,6 +106,7 @@ class App extends Component {
             image={friend.image}
           />
         ))}
+        </div>
       </div>
     );
   }
